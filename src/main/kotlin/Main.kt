@@ -1,28 +1,52 @@
 fun main() {
-    val rows = 10
-    val cols = 10
-    val matrix = Array(rows) { Array(cols) { " " } }
 
+    val fields = createFields()
 
-    for (i in 0 until rows) {
-        for (j in 0 until cols) {
-            matrix[i][j] = " "
+    showField(fields.first)
+
+    while (true) {
+
+    }
+
+}
+
+fun createFields(): Pair<Array<Array<Int>>, Array<Array<Int>>> {
+
+    val field1 = Array(10) {Array(10) {0} }
+    val field2 = Array(10) {Array(10) {0} }
+
+    for (i in 0 ..< 10) {
+        for (j in 0 ..< 10) {
+            field1[i][j] += j + i * 10
+            field2[i][j] += j + i * 10
         }
     }
 
+    return Pair(field1, field2)
 
-    print("   ")
-    for (i in 1..cols) {
-        print("$i ")
+}
+
+fun showField(field: Array<Array<Int>>) {
+
+    print("\t  ")
+    for (i in '0'..'9') {
+        print("$i   ")
     }
     println()
-    val letters= ('A'..'J').toList()
-    for(i in 0 until rows){
-        print("${letters[i]}|")
-        for(j in 0 until cols){
-            print("${matrix[i][j]}|")
+
+    for (i in 0 ..< 10) {
+        print(" ${(i + 65).toChar()}  |")
+        for (j in 0 ..< 10) {
+            print(" ${69.toChar()} |")
         }
         println()
     }
+}
 
+fun place(field: Array<Array<Int>>): Array<Array<Int>> {
+    return field
+}
+
+fun check(): Boolean? {
+    return null
 }
