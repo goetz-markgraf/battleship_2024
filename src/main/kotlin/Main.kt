@@ -9,7 +9,7 @@ fun main() {
     showField(fields.first)
     while (true) {
         println("Fill")
-        place(fields.first)
+         place(fields.first)
     }
 }
 
