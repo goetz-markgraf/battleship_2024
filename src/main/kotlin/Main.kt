@@ -6,8 +6,7 @@ enum class Function {
 
 fun main() {
     val fields = createFields()
-
-     showField(fields.first)
+    showField(fields.first)
     while (true) {
 
     }
