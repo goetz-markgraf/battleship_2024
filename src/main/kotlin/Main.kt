@@ -7,6 +7,7 @@ enum class Function {
 fun main() {
     val fields = createFields()
     showField(fields.first)
+    place(fields.first)
     while (true) {
 
     }
@@ -55,22 +56,14 @@ fun place(field: Array<Array<Int>>): Array<Array<Int>> {
     }
     return field
 }
-
-fun convert(input: Char): Char {
-    val lettersToNumber = mapOf(
-        'a' to '0',
-        'b' to '1',
-        'c' to '2',
-        'd' to '3',
-        'e' to '4',
-        'f' to '5',
-        'g' to '6',
-        'h' to '7',
-        'i' to '8',
-        'j' to '9'
-    )
-
-    return lettersToNumber[input] ?: input
+fun convert(input: String): String {
+    return input.map{
+        ('a'..'j').indexOf(it).let{
+            index->
+        if (index !=-1) index.toString()
+        else it.toString()
+        }
+    }.joinToString("")
 }
 
 fun check() {
