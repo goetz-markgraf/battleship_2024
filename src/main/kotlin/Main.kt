@@ -58,8 +58,8 @@ fun place(field: Array<Array<Int>>): Array<Array<Int>> {
     return field
 }
 
-fun convert(input:Char): Char {
-    val lettersToNumber = listOf(
+fun convert(input: Char): Char {
+    val lettersToNumber = mapOf(
         'a' to '0',
         'b' to '1',
         'c' to '2',
@@ -71,9 +71,8 @@ fun convert(input:Char): Char {
         'i' to '8',
         'j' to '9'
     )
-    for(char in lettersToNumber) {
-        return lettersToNumber.find { it.first == input }?.second ?: input
-    }
+
+    return lettersToNumber[input] ?: input
 }
 
 fun check() {
