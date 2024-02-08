@@ -5,11 +5,10 @@ enum class Function {
 }
 
 fun main() {
-
     val fields = createFields()
 
     showField(fields.first)
-
+    place(fields.first)
     while (true) {
 
     }
@@ -54,8 +53,27 @@ fun place(field: Array<Array<Int>>): Array<Array<Int>> {
     val location = readln().lowercase()
     if (inputIsValid(Function.PLACE, location)) {
 
+
     }
     return field
+}
+
+fun convert(input:Char): Char {
+    val lettersToNumber = listOf(
+        'a' to '0',
+        'b' to '1',
+        'c' to '2',
+        'd' to '3',
+        'e' to '4',
+        'f' to '5',
+        'g' to '6',
+        'h' to '7',
+        'i' to '8',
+        'j' to '9'
+    )
+    for(char in lettersToNumber) {
+        return lettersToNumber.find { it.first == input }?.second ?: input
+    }
 }
 
 fun check() {
