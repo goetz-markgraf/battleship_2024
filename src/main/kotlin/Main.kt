@@ -1,3 +1,5 @@
+import java.lang.Integer.max
+import java.lang.Integer.min
 import kotlin.math.abs
 
 enum class Function {
@@ -74,22 +76,22 @@ fun showField(gameState: GameState, player: Player) {
 }
 
 fun place(gameState: GameState, player: Player): GameState {
-    val location = readLine()?.lowercase() ?: ""
+    val location = readln().lowercase()
     println("inside place")
 
     val ships = (if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2).toMutableList()
 
     if (inputIsValid(Function.PLACE, location)) {
         val coordinates = convertPair(location)
-        val firstPos = coordinates.first
-        val lastPos = coordinates.second
-
+        val firstPos = Pair(min(coordinates.first.row, coordinates.second.row),  min(coordinates.first.col, coordinates.second.col))
+        val lastPos = Pair(max(coordinates.first.row, coordinates.second.row),  max(coordinates.first.col, coordinates.second.col))
 
         println(coordinates)
+
         val n = mutableListOf<Position>()
 
-        for (row in firstPos.row..lastPos.row) {
-            for (col in firstPos.col..lastPos.col) {
+        for (row in firstPos.first..lastPos.first) {
+            for (col in firstPos.second..lastPos.second) {
                 println("set at $row,$col")
                 n.add(Position(row = row, col = col))
             }
@@ -107,11 +109,7 @@ fun place(gameState: GameState, player: Player): GameState {
 
 fun convertPair(input: String): Pair<Position, Position> {
     println("in convertPair $input")
-    return if(input.length == 4){
-        Pair(convert(input.substring(0, 2)), convert(input.substring(2, 4)))
-    } else {
-        Pair(convert(input.substring(1, 3)), convert(input.substring(0, 2)))
-    }
+    return Pair(convert(input.substring(0, 2)), convert(input.substring(2, 4)))
 }
 
 fun convert(input: String): Position {
@@ -126,8 +124,9 @@ fun convert(input: String): Position {
 }
 
 fun check() {
-    val pos = readln().lowercase() ?: ""
+    val pos = readln().lowercase()
     if (inputIsValid(Function.CHECK, pos)) {
+
     }
 }
 
