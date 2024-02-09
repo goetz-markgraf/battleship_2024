@@ -93,20 +93,28 @@ fun place(gameState: GameState, player: Player): GameState {
 
         for (row in firstPos.first..lastPos.first) {
             for (col in firstPos.second..lastPos.second) {
+                if(isCellOccupied(gameState, player, Position(row,col))) {
+                    println("This cell is occupied")
+                    return gameState
+                } else {
                 println("set at $row,$col")
                 n.add(Position(row = row, col = col))
+                }
             }
         }
         ships.addLast(Ship(n))
     }
-
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
     } else {
         gameState.copy(ships2 = ships)
     }
 }
+fun isCellOccupied(gameState: GameState, player: Player, position: Position): Boolean{
+    val ships = if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2
 
+    return ships.any{ship-> ship.parts.any{it == position}}
+}
 
 fun convertPair(input: String): Pair<Position, Position> {
     println("in convertPair $input")
@@ -142,7 +150,6 @@ fun inputIsValid(function: Function, input: String): Boolean {
                 return false
             }
         }
-
         Function.PLACE -> {
             if (input.length == 4 &&
                 input[0] in 'a'..'j' && input[1] in '0'..'9' &&
