@@ -84,8 +84,10 @@ fun place(gameState: GameState, player: Player): GameState {
 
     if (inputIsValid(Function.PLACE, location)) {
         val coordinates = convertPair(location)
-        val firstPos = Pair(min(coordinates.first.row, coordinates.second.row),  min(coordinates.first.col, coordinates.second.col))
-        val lastPos = Pair(max(coordinates.first.row, coordinates.second.row),  max(coordinates.first.col, coordinates.second.col))
+        val firstPos =
+            Pair(min(coordinates.first.row, coordinates.second.row), min(coordinates.first.col, coordinates.second.col))
+        val lastPos =
+            Pair(max(coordinates.first.row, coordinates.second.row), max(coordinates.first.col, coordinates.second.col))
 
         println(coordinates)
 
@@ -93,12 +95,12 @@ fun place(gameState: GameState, player: Player): GameState {
 
         for (row in firstPos.first..lastPos.first) {
             for (col in firstPos.second..lastPos.second) {
-                if(isCellOccupied(gameState, player, Position(row,col))) {
+                if (isCellOccupied(gameState, player, Position(col, row))) {
                     println("This cell is occupied")
                     return gameState
                 } else {
-                println("set at $row,$col")
-                n.add(Position(row = row, col = col))
+                    println("set at $row,$col")
+                    n.add(Position(col, row))
                 }
             }
         }
@@ -106,14 +108,15 @@ fun place(gameState: GameState, player: Player): GameState {
     }
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
-     } else {
+    } else {
         gameState.copy(ships2 = ships)
     }
 }
-fun isCellOccupied(gameState: GameState, player: Player, position: Position): Boolean{
+
+fun isCellOccupied(gameState: GameState, player: Player, position: Position): Boolean {
     val ships = if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2
 
-    return ships.any{ship-> ship.parts.any{it == position}}
+    return ships.any { ship -> ship.parts.any { it == position } }
 }
 
 fun convertPair(input: String): Pair<Position, Position> {
@@ -150,6 +153,7 @@ fun inputIsValid(function: Function, input: String): Boolean {
                 return false
             }
         }
+
         Function.PLACE -> {
             if (input.length == 4 &&
                 input[0] in 'a'..'j' && input[1] in '0'..'9' &&
