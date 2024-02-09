@@ -31,8 +31,9 @@ data class GameState(
 fun main() {
     var gameState = createGameState()
     showField(gameState, Player.PLAYER1)
+
     while (true) {
-        println("Fill")
+        print("Enter ship coordinates: ")
         gameState = place(gameState, Player.PLAYER1)
         showField(gameState, Player.PLAYER1)
     }
@@ -67,7 +68,7 @@ fun showField(gameState: GameState, player: Player) {
                 }
             }
             if (shipFound) {
-                print("▉▉")
+                print("██")
             }
             print(tabVertLine)
         }
