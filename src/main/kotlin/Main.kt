@@ -51,9 +51,9 @@ fun showField(gameState: GameState, player: Player) {
 
     val ships = if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2
 
-    for (row in 0 until 10) {
-        print(" " + (row + 65).toChar() + tabVertLine)
-        for (col in 0 until 10) {
+    for (col in 0 until 10) {
+        print(" " + (col + 65).toChar() + tabVertLine)
+        for (row in 0 until 10) {
             var shipFound = false
             ships.forEach {
                 it.parts.forEach {
