@@ -107,7 +107,11 @@ fun place(gameState: GameState, player: Player): GameState {
 
 fun convertPair(input: String): Pair<Position, Position> {
     println("in convertPair $input")
-    return Pair(convert(input.substring(0, 2)), convert(input.substring(2, 4)))
+    return if(input.length == 4){
+        Pair(convert(input.substring(0, 2)), convert(input.substring(2, 4)))
+    } else {
+        Pair(convert(input.substring(1, 3)), convert(input.substring(0, 2)))
+    }
 }
 
 fun convert(input: String): Position {
@@ -122,7 +126,7 @@ fun convert(input: String): Position {
 }
 
 fun check() {
-    val pos = readLine()?.lowercase() ?: ""
+    val pos = readln().lowercase() ?: ""
     if (inputIsValid(Function.CHECK, pos)) {
     }
 }
