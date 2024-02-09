@@ -6,13 +6,23 @@ enum class Player {
     PLAYER1, PLAYER2
 }
 
-data class Position(val col: Int, val row: Int)
+data class Position(
+    val col: Int,
+    val row: Int
+)
 
-data class Ship(val parts: ArrayList<Position>)
+data class Ship(
+    val parts: ArrayList<Position>
+)
 
 typealias Field = Array<Array<Int>>
 
-data class GameState(val field1: Field, val field2: Field, val ships1: List<Ship>, val ships2: List<Ship>)
+data class GameState(
+    val field1: Field,
+    val field2: Field,
+    val ships1: List<Ship>,
+    val ships2: List<Ship>
+)
 
 fun main() {
     var gameState = createGameState()
