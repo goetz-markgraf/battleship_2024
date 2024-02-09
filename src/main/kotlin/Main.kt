@@ -1,3 +1,5 @@
+import kotlin.math.abs
+
 enum class Function {
     CHECK, PLACE
 }
@@ -94,6 +96,7 @@ fun place(gameState: GameState, player: Player): GameState {
         }
         ships.addLast(Ship(n))
     }
+
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
     } else {
@@ -140,7 +143,9 @@ fun inputIsValid(function: Function, input: String): Boolean {
             if (input.length == 4 &&
                 input[0] in 'a'..'j' && input[1] in '0'..'9' &&
                 input[2] in 'a'..'j' && input[3] in '0'..'9' &&
-                (input[0] == input[2] || input[1] == input[3])
+                (input[0] == input[2] || input[1] == input[3]) &&
+                abs(input[0] - input[2]) <= 3 &&
+                abs(input[1] - input[3]) <= 3
             ) {
                 return true
             } else {
