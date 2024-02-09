@@ -13,22 +13,15 @@ fun main() {
     showField(fields.first)
     while (true) {
         println("Fill")
-        val new = place(fields.first)
-        showField(new)
+        val newOne = place(fields.first)
+        showField(newOne)
     }
 }
 
 fun createFields(): Pair<Array<Array<Int>>, Array<Array<Int>>> {
     val field1 = Array(10) { Array(10) { 0 } }
     val field2 = Array(10) { Array(10) { 0 } }
-/*
-    for (i in 0 until 10) {
-        for (j in 0 until 10) {
-            field1[i][j] += j + i * 10
-            field2[i][j] += j + i * 10
-        }
-    }
-*/
+
     return Pair(field1, field2)
 }
 
@@ -52,7 +45,7 @@ fun showField(field: Array<Array<Int>>) {
                 }
             }
             if (shipFound) {
-                print("x")
+                print("▉▉")
             }
             print(tabVertLine)
         }
