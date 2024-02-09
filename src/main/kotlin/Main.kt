@@ -12,7 +12,7 @@ data class Position(
 )
 
 data class Ship(
-    val parts: ArrayList<Position>
+    var parts: List<Position>
 )
 
 typealias Field = Array<Array<Int>>
@@ -42,8 +42,8 @@ fun createGameState(): GameState {
 }
 
 fun showField(gameState: GameState, player: Player) {
-    for (i in '0'..'9') {
-        print("\t  $i")
+    for (row in '0'..'9') {
+        print("\t  $row")
     }
     println()
 
@@ -79,23 +79,20 @@ fun place(gameState: GameState, player: Player): GameState {
 
     if (inputIsValid(Function.PLACE, location)) {
         val coordinates = convertPair(location)
-        //if (coordinates != null) {
         val firstPos = coordinates.first
         val lastPos = coordinates.second
 
 
         println(coordinates)
-        val n: ArrayList<Pair<Int, Int>> = ArrayList()
+        val n = mutableListOf<Position>()
 
-        for (i in firstPos.first..lastPos.first) {
-            for (j in firstPos.second..lastPos.second) {
-                println("set at $i,$j")
-                //field[i][j] = 2
-                n.add(Position(i, j))
+        for (row in firstPos.row..lastPos.row) {
+            for (col in firstPos.col..lastPos.col) {
+                println("set at $row,$col")
+                n.add(Position(row = row, col = col))
             }
         }
         ships.addLast(Ship(n))
-        //}
     }
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
@@ -114,9 +111,6 @@ fun convert(input: String): Position {
     println("in convert $input")
     val rowChar = input[0]
     val columnChar = input[1]
-    /*if (rowChar !in 'a'..'j' || columnChar !in '0'..'9') {
-        return null
-    }*/
 
     val row = rowChar - 'a'
     val column = columnChar.toString().toInt()
@@ -150,7 +144,7 @@ fun inputIsValid(function: Function, input: String): Boolean {
             ) {
                 return true
             } else {
-                println("Enter the cell indexes in format \"letternumber\" for placing ship, for example \"a0\"")
+                println("Enter the cell indexes in format \"letternumberletternumber\" for placing ship, for example \"a0b0\"")
                 return false
             }
         }
