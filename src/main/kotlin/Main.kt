@@ -33,8 +33,7 @@ fun main() {
     val shipsLeft = mutableListOf<Int>(4, 3, 2, 1)
     showField(gameState, Player.PLAYER1)
 
-    while (true) {
-        print("Enter ship coordinates: ")
+    while (shipsLeft.sum() > 0) {
         gameState = place(gameState, Player.PLAYER1, shipsLeft)
         showField(gameState, Player.PLAYER1)
     }
@@ -79,6 +78,7 @@ fun showField(gameState: GameState, player: Player) {
 }
 
 fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): GameState {
+    print("Enter ship coordinates: ")
     val location = readln().lowercase()
     println("inside place")
 
@@ -110,7 +110,7 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
             }
         }
         ships.addLast(Ship(n))
-        checkShipsLeft(gameState, player, shipsLeft, length)
+        checkShipsLeft(gameState, shipsLeft, length)
     }
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
@@ -148,12 +148,16 @@ fun check() {
     }
 }
 
-fun checkShipsLeft(gameState: GameState, player: Player, shipsLeft: MutableList<Int>, length: Int): GameState {
+fun checkShipsLeft(gameState: GameState, shipsLeft: MutableList<Int>, length: Int): GameState {
     if (length != 0 && shipsLeft[length - 1] != 0) {
         shipsLeft[length - 1]--
     }
     println(shipsLeft)
     return gameState
+}
+
+fun swapPlayer() {
+
 }
 
 fun inputIsValid(function: Function, input: String): Boolean {
