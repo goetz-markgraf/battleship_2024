@@ -112,7 +112,7 @@ fun place(gameState: GameState, player: Player): GameState {
     }
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
-    } else {
+    } else  {
         gameState.copy(ships2 = ships)
     }
 }
