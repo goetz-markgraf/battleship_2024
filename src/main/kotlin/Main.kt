@@ -9,6 +9,9 @@ enum class Function {
 enum class Player {
     PLAYER1, PLAYER2
 }
+enum class ShipLength{
+    SINGLE, DOUBLE, TRIPPLE, QUADRUPLE
+}
 
 data class Position(
     val col: Int,
@@ -40,6 +43,7 @@ fun main() {
 }
 
 fun createGameState(): GameState {
+
     val field1 = Array(10) { Array(10) { 0 } }
     val field2 = Array(10) { Array(10) { 0 } }
 
