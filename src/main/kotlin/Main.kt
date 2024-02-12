@@ -9,8 +9,8 @@ enum class Function {
 enum class Player {
     PLAYER1, PLAYER2
 }
-enum class ShipLength{
-    SINGLE, DOUBLE, TRIPPLE, QUADRUPLE
+enum class ShipLength {
+    SINGLE, DOUBLE, TRIPLE, QUADRUPLE
 }
 
 data class Position(
@@ -88,17 +88,15 @@ fun place(gameState: GameState, player: Player): GameState {
 
     if (inputIsValid(Function.PLACE, location)) {
         val coordinates = convertPair(location)
-        val firstPos =
-            Pair(min(coordinates.first.row, coordinates.second.row), min(coordinates.first.col, coordinates.second.col))
-        val lastPos =
-            Pair(max(coordinates.first.row, coordinates.second.row), max(coordinates.first.col, coordinates.second.col))
+        val firstPos = Position(min(coordinates.first.row, coordinates.second.row), min(coordinates.first.col, coordinates.second.col))
+        val lastPos = Position(max(coordinates.first.row, coordinates.second.row), max(coordinates.first.col, coordinates.second.col))
 
         println(coordinates)
 
         val n = mutableListOf<Position>()
 
-        for (row in firstPos.first..lastPos.first) {
-            for (col in firstPos.second..lastPos.second) {
+        for (row in firstPos.col..lastPos.col) {
+            for (col in firstPos.row..lastPos.row) {
                 if (isCellOccupied(gameState, player, Position(col, row))) {
                     println("This cell is occupied")
                     return gameState
@@ -144,6 +142,10 @@ fun check() {
     if (inputIsValid(Function.CHECK, pos)) {
 
     }
+}
+
+fun shipsLeft() {
+
 }
 
 fun inputIsValid(function: Function, input: String): Boolean {
