@@ -99,11 +99,13 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
                 if (isCellOccupied(gameState, player, Position(col, row))) {
                     println("This cell is occupied")
                     return gameState
+                } else if (shipsLeft[lastPos.row - firstPos.row] == 0 && shipsLeft[lastPos.col - firstPos.col] == 0) {
+                    println("You dont have ships of this size left")
+                    return gameState
                 } else {
-                    println("set at $row,$col")
+                    println("set at $row, $col")
                     n.add(Position(col, row))
                     length++
-                    println(length)
                 }
             }
         }
@@ -112,7 +114,7 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
     }
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
-    } else  {
+    } else {
         gameState.copy(ships2 = ships)
     }
 }
@@ -147,16 +149,8 @@ fun check() {
 }
 
 fun checkShipsLeft(gameState: GameState, player: Player, shipsLeft: MutableList<Int>, length: Int): GameState {
-    when (length) {
-        1 -> shipsLeft[0]--
-        2 -> shipsLeft[1]--
-        3 -> shipsLeft[2]--
-        4 -> shipsLeft[3]--
-    }
-    for (length in shipsLeft) {
-        if (length == 0) {
-            shipsLeft.remove(length)
-        }
+    if (length != 0 && shipsLeft[length - 1] != 0) {
+        shipsLeft[length - 1]--
     }
     println(shipsLeft)
     return gameState
