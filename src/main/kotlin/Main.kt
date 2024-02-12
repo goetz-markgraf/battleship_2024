@@ -30,13 +30,23 @@ data class GameState(
 
 fun main() {
     var gameState = createGameState()
-    val shipsLeft = mutableListOf<Int>(4, 3, 2, 1)
+    val shipsLeftPlayer1 = mutableListOf<Int>(4, 3, 2, 1)
+    val shipsLeftPlayer2 = mutableListOf<Int>(4, 3, 2, 1)
+    var activePlayer = Player.PLAYER1
     showField(gameState, Player.PLAYER1)
 
-    while (shipsLeft.sum() > 0) {
-        gameState = place(gameState, Player.PLAYER1, shipsLeft)
+    while (shipsLeftPlayer1.sum() > 0) {
+        gameState = place(gameState, Player.PLAYER1, shipsLeftPlayer1)
         showField(gameState, Player.PLAYER1)
     }
+    gameState = resetGameState()
+    showField(gameState, Player.PLAYER2)
+
+    while (shipsLeftPlayer2.sum() > 0) {
+        gameState = place(gameState, Player.PLAYER2, shipsLeftPlayer2)
+        showField(gameState, Player.PLAYER2)
+    }
+
 }
 
 fun createGameState(): GameState {
@@ -45,6 +55,10 @@ fun createGameState(): GameState {
     val field2 = Array(10) { Array(10) { 0 } }
 
     return GameState(field1, field2, emptyList(), emptyList())
+}
+
+fun resetGameState(): GameState{
+    return createGameState()
 }
 
 fun showField(gameState: GameState, player: Player) {
@@ -86,8 +100,14 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
 
     if (inputIsValid(Function.PLACE, location)) {
         val coordinates = convertPair(location)
-        val firstPos = Position(min(coordinates.first.row, coordinates.second.row), min(coordinates.first.col, coordinates.second.col))
-        val lastPos = Position(max(coordinates.first.row, coordinates.second.row), max(coordinates.first.col, coordinates.second.col))
+        val firstPos = Position(
+            min(coordinates.first.row, coordinates.second.row),
+            min(coordinates.first.col, coordinates.second.col)
+        )
+        val lastPos = Position(
+            max(coordinates.first.row, coordinates.second.row),
+            max(coordinates.first.col, coordinates.second.col)
+        )
         var length = 0
 
         println(coordinates)
@@ -99,9 +119,6 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
                 if (isCellOccupied(gameState, player, Position(col, row))) {
                     println("This cell is occupied")
                     return gameState
-                } else if (shipsLeft[lastPos.row - firstPos.row] == 0 && shipsLeft[lastPos.col - firstPos.col] == 0) {
-                    println("You dont have ships of this size left")
-                    return gameState
                 } else {
                     println("set at $row, $col")
                     n.add(Position(col, row))
@@ -109,9 +126,14 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
                 }
             }
         }
-        ships.addLast(Ship(n))
-        checkShipsLeft(gameState, shipsLeft, length)
+        if (shipsLeft[length - 1] == 0 ) {
+            println("You dont have ships of this size left")
+            return gameState
+        }
+            ships.add(Ship(n))
+            checkShipsLeft(gameState, shipsLeft, length)
     }
+
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
     } else {
