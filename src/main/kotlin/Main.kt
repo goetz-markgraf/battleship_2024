@@ -9,9 +9,6 @@ enum class Function {
 enum class Player {
     PLAYER1, PLAYER2
 }
-enum class ShipLength {
-    SINGLE, DOUBLE, TRIPLE, QUADRUPLE
-}
 
 data class Position(
     val col: Int,
@@ -33,11 +30,12 @@ data class GameState(
 
 fun main() {
     var gameState = createGameState()
+    val shipsLeft = mutableListOf<Int>(4, 3, 2, 1)
     showField(gameState, Player.PLAYER1)
 
     while (true) {
         print("Enter ship coordinates: ")
-        gameState = place(gameState, Player.PLAYER1)
+        gameState = place(gameState, Player.PLAYER1, shipsLeft)
         showField(gameState, Player.PLAYER1)
     }
 }
@@ -80,7 +78,7 @@ fun showField(gameState: GameState, player: Player) {
     }
 }
 
-fun place(gameState: GameState, player: Player): GameState {
+fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): GameState {
     val location = readln().lowercase()
     println("inside place")
 
@@ -90,6 +88,7 @@ fun place(gameState: GameState, player: Player): GameState {
         val coordinates = convertPair(location)
         val firstPos = Position(min(coordinates.first.row, coordinates.second.row), min(coordinates.first.col, coordinates.second.col))
         val lastPos = Position(max(coordinates.first.row, coordinates.second.row), max(coordinates.first.col, coordinates.second.col))
+        var length = 0
 
         println(coordinates)
 
@@ -103,10 +102,13 @@ fun place(gameState: GameState, player: Player): GameState {
                 } else {
                     println("set at $row,$col")
                     n.add(Position(col, row))
+                    length++
+                    println(length)
                 }
             }
         }
         ships.addLast(Ship(n))
+        checkShipsLeft(gameState, player, shipsLeft, length)
     }
     return if (player == Player.PLAYER1) {
         gameState.copy(ships1 = ships)
@@ -144,8 +146,20 @@ fun check() {
     }
 }
 
-fun shipsLeft() {
-
+fun checkShipsLeft(gameState: GameState, player: Player, shipsLeft: MutableList<Int>, length: Int): GameState {
+    when (length) {
+        1 -> shipsLeft[0]--
+        2 -> shipsLeft[1]--
+        3 -> shipsLeft[2]--
+        4 -> shipsLeft[3]--
+    }
+    for (length in shipsLeft) {
+        if (length == 0) {
+            shipsLeft.remove(length)
+        }
+    }
+    println(shipsLeft)
+    return gameState
 }
 
 fun inputIsValid(function: Function, input: String): Boolean {
