@@ -40,6 +40,8 @@ fun main() {
     val shipsLeftPlayer2 = mutableListOf(4, 3, 2, 1)
 
     showField(gameState, Player.PLAYER1)
+    gameState = check(gameState, Player.PLAYER1)
+
     while (shipsLeftPlayer1.sum() > 0) {
         gameState = place(gameState, Player.PLAYER1, shipsLeftPlayer1)
         showField(gameState, Player.PLAYER1)
@@ -124,9 +126,8 @@ fun showHits(gameState: GameState, player: Player) {
 }
 
 fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): GameState {
-    print("Enter ship coordinates: ")
+    print("$player, Enter ship coordinates: ")
     val location = readln().lowercase()
-
     val ships = (if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2).toMutableList()
 
     if (inputIsValid(Function.PLACE, location)) {
@@ -140,8 +141,6 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
             max(coordinates.first.col, coordinates.second.col)
         )
         var length = 0
-
-        println(coordinates)
 
         val posList = mutableListOf<Position>()
 
@@ -187,10 +186,15 @@ fun convert(input: String): Position {
 }
 
 fun check(gameState: GameState, player: Player): GameState {
+    println("$player, Enter ship coordinates:")
     val pos = readln().lowercase()
+    val hits = (if (player == Player.PLAYER1) gameState.hits1 else gameState.hits2).toMutableList()
+
     if (inputIsValid(Function.CHECK, pos)) {
+        val coordinates = convertPair(pos)
 
     }
+    return gameState
 }
 
 fun changeShipsLeft(gameState: GameState, shipsLeft: MutableList<Int>, length: Int): GameState {
