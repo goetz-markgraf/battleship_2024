@@ -30,18 +30,16 @@ data class GameState(
 
 fun main() {
     var gameState = createGameState()
-    val shipsLeftPlayer1 = mutableListOf<Int>(4, 3, 2, 1)
-    val shipsLeftPlayer2 = mutableListOf<Int>(4, 3, 2, 1)
-    var activePlayer = Player.PLAYER1
-    showField(gameState, Player.PLAYER1)
+    val shipsLeftPlayer1 = mutableListOf(4, 3, 2, 1)
+    val shipsLeftPlayer2 = mutableListOf(4, 3, 2, 1)
 
+    showField(gameState, Player.PLAYER1)
     while (shipsLeftPlayer1.sum() > 0) {
         gameState = place(gameState, Player.PLAYER1, shipsLeftPlayer1)
         showField(gameState, Player.PLAYER1)
     }
-    gameState = resetGameState()
-    showField(gameState, Player.PLAYER2)
 
+    showField(gameState, Player.PLAYER2)
     while (shipsLeftPlayer2.sum() > 0) {
         gameState = place(gameState, Player.PLAYER2, shipsLeftPlayer2)
         showField(gameState, Player.PLAYER2)
@@ -55,10 +53,6 @@ fun createGameState(): GameState {
     val field2 = Array(10) { Array(10) { 0 } }
 
     return GameState(field1, field2, emptyList(), emptyList())
-}
-
-fun resetGameState(): GameState{
-    return createGameState()
 }
 
 fun showField(gameState: GameState, player: Player) {
@@ -176,10 +170,6 @@ fun checkShipsLeft(gameState: GameState, shipsLeft: MutableList<Int>, length: In
     }
     println(shipsLeft)
     return gameState
-}
-
-fun swapPlayer() {
-
 }
 
 fun inputIsValid(function: Function, input: String): Boolean {
