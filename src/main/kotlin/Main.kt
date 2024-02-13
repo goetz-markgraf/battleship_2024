@@ -19,13 +19,19 @@ data class Ship(
     var parts: List<Position>
 )
 
+data class Hit(
+    var hits: List<Position>
+)
+
 typealias Field = Array<Array<Int>>
 
 data class GameState(
     val field1: Field,
     val field2: Field,
     val ships1: List<Ship>,
-    val ships2: List<Ship>
+    val ships2: List<Ship>,
+    val hits1: List<Hit>,
+    val hits2: List<Hit>
 )
 
 fun main() {
@@ -52,7 +58,7 @@ fun createGameState(): GameState {
     val field1 = Array(10) { Array(10) { 0 } }
     val field2 = Array(10) { Array(10) { 0 } }
 
-    return GameState(field1, field2, emptyList(), emptyList())
+    return GameState(field1, field2, emptyList(), emptyList(), emptyList(), emptyList())
 }
 
 fun showField(gameState: GameState, player: Player) {
@@ -78,6 +84,38 @@ fun showField(gameState: GameState, player: Player) {
             }
             if (shipFound) {
                 print("██")
+            }
+            print(tabVertLine)
+        }
+        println()
+    }
+}
+
+fun showHits(gameState: GameState, player: Player) {
+    for (row in '0'..'9') {
+        print("\t  $row")
+    }
+    println()
+
+    val tabVertLine = "\t${9474.toChar()}"
+
+    val hits = if (player == Player.PLAYER1) gameState.hits1 else gameState.hits2
+
+    for (col in 0 until 10) {
+        print(" " + (col + 65).toChar() + tabVertLine)
+        for (row in 0 until 10) {
+            var shipFound = false
+            hits.forEach {
+                it.hits.forEach {
+                    if (it.row == row && it.col == col) {
+                        shipFound = true
+                    }
+                }
+            }
+            if (shipFound) {
+                print(" X")
+            } else {
+                print(" O")
             }
             print(tabVertLine)
         }
@@ -148,7 +186,7 @@ fun convert(input: String): Position {
     return Position(row, col)
 }
 
-fun check() {
+fun check(gameState: GameState, player: Player): GameState {
     val pos = readln().lowercase()
     if (inputIsValid(Function.CHECK, pos)) {
 
@@ -166,7 +204,6 @@ fun changeShipsLeft(gameState: GameState, shipsLeft: MutableList<Int>, length: I
 }
 
 fun inputIsValid(function: Function, input: String): Boolean {
-    println(function)
     when (function) {
         Function.CHECK -> {
             if (input.length == 2 && input[0] in 'a'..'j' && input[1] in '0'..'9') {
