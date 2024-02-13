@@ -88,7 +88,6 @@ fun showField(gameState: GameState, player: Player) {
 fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): GameState {
     print("Enter ship coordinates: ")
     val location = readln().lowercase()
-    println("inside place")
 
     val ships = (if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2).toMutableList()
 
@@ -106,7 +105,7 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
 
         println(coordinates)
 
-        val n = mutableListOf<Position>()
+        val posList = mutableListOf<Position>()
 
         for (row in firstPos.col..lastPos.col) {
             for (col in firstPos.row..lastPos.row) {
@@ -114,18 +113,13 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
                     println("This cell is occupied")
                     return gameState
                 } else {
-                    println("set at $row, $col")
-                    n.add(Position(col, row))
+                    posList.add(Position(col, row))
                     length++
                 }
             }
         }
-        if (shipsLeft[length - 1] == 0 ) {
-            println("You dont have ships of this size left")
-            return gameState
-        }
-            ships.add(Ship(n))
-            checkShipsLeft(gameState, shipsLeft, length)
+        ships.add(Ship(posList))
+        changeShipsLeft(gameState, shipsLeft, length)
     }
 
     return if (player == Player.PLAYER1) {
@@ -137,24 +131,21 @@ fun place(gameState: GameState, player: Player, shipsLeft: MutableList<Int>): Ga
 
 fun isCellOccupied(gameState: GameState, player: Player, position: Position): Boolean {
     val ships = if (player == Player.PLAYER1) gameState.ships1 else gameState.ships2
-
     return ships.any { ship -> ship.parts.any { it == position } }
 }
 
 fun convertPair(input: String): Pair<Position, Position> {
-    println("in convertPair $input")
     return Pair(convert(input.substring(0, 2)), convert(input.substring(2, 4)))
 }
 
 fun convert(input: String): Position {
-    println("in convert $input")
     val rowChar = input[0]
-    val columnChar = input[1]
+    val colChar = input[1]
 
     val row = rowChar - 'a'
-    val column = columnChar.toString().toInt()
+    val col = colChar.toString().toInt()
 
-    return Position(row, column)
+    return Position(row, col)
 }
 
 fun check() {
@@ -164,11 +155,13 @@ fun check() {
     }
 }
 
-fun checkShipsLeft(gameState: GameState, shipsLeft: MutableList<Int>, length: Int): GameState {
-    if (length != 0 && shipsLeft[length - 1] != 0) {
+fun changeShipsLeft(gameState: GameState, shipsLeft: MutableList<Int>, length: Int): GameState {
+    if (shipsLeft[length - 1] != 0) {
         shipsLeft[length - 1]--
+    } else {
+        println("You dont have ships of this size left")
     }
-    println(shipsLeft)
+    println("single: ${shipsLeft[0]}, double: ${shipsLeft[1]}, triple: ${shipsLeft[2]}, quadruple: ${shipsLeft[3]}")
     return gameState
 }
 
